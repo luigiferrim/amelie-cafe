@@ -143,7 +143,9 @@ export default function AmelieCafePage() {
         .replace(".", ",")}\n`;
     });
     message += `\n*Total: R$ ${getTotalPrice().toFixed(2).replace(".", ",")}*`;
-    const whatsappUrl = `https://wa.me/message/FN7B5OOTHZBNC1?text=${encodeURIComponent(
+
+    // ** CORREÇÃO APLICADA AQUI **
+    const whatsappUrl = `https://wa.me/5549988971552?text=${encodeURIComponent(
       message
     )}`;
     window.open(whatsappUrl, "_blank");
@@ -253,8 +255,9 @@ export default function AmelieCafePage() {
         </div>
       </footer>
 
+      {/* ** CORREÇÃO APLICADA AQUI ** */}
       <a
-        href="https://wa.me/message/FN7B5OOTHZBNC1"
+        href="https://wa.me/5549988971552"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-primary text-primary-foreground p-4 rounded-full shadow-lg hover:bg-primary/90 transition-transform transform hover:scale-110 z-40 flex items-center space-x-3"
