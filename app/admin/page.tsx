@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { auth, db } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase"; // Importa a configuração do Firebase
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -297,19 +297,22 @@ const ProductModal = ({
 };
 
 // --- COMPONENTE DA TELA DE LOGIN ---
-const LoginForm = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Adicionado estado de loading para o botão
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setLoading(true); // Inicia o loading
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      onLoginSuccess();
+      // Não precisa fazer mais nada aqui, o onAuthStateChanged cuidará da transição
     } catch (err: any) {
       setError("Falha no login. Verifique seu e-mail e senha.");
+      setLoading(false); // Para o loading em caso de erro
     }
   };
 
@@ -356,9 +359,10 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess: () => void }) => {
           <div>
             <button
               type="submit"
-              className="w-full px-4 py-2 font-semibold text-white bg-primary rounded-md hover:bg-primary/90"
+              disabled={loading}
+              className="w-full px-4 py-2 font-semibold text-white bg-primary rounded-md hover:bg-primary/90 disabled:bg-primary/50"
             >
-              Entrar
+              {loading ? "Entrando..." : "Entrar"}
             </button>
           </div>
         </form>
@@ -388,9 +392,6 @@ export default function AdminPage() {
     );
   }
 
-  return user ? (
-    <AdminDashboard user={user} />
-  ) : (
-    <LoginForm onLoginSuccess={() => setLoading(true)} />
-  );
+  // Agora a transição é mais limpa. Se o 'user' existir, mostra o painel. Senão, o login.
+  return user ? <AdminDashboard user={user} /> : <LoginForm />;
 }
