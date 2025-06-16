@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { auth, db } from "@/lib/firebase";
+import { auth, db, storage } from "@/lib/firebase";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -11,6 +11,7 @@ import {
   updateEmail,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   collection,
@@ -20,7 +21,8 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { Plus, Edit, Trash2, X, AlertCircle } from "lucide-react";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { Plus, Edit, Trash2, X, AlertCircle, UploadCloud } from "lucide-react";
 
 // --- TIPOS DE DADOS ---
 interface Product {
@@ -206,7 +208,6 @@ const AccountManagement = ({ user }: { user: User }) => {
     <>
       <h2 className="text-2xl font-bold mb-6">Minha Conta</h2>
       <div className="space-y-8">
-        {/* Formulário de Alteração de Senha */}
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-xl font-semibold mb-4">Alterar Senha</h3>
           <form onSubmit={handleChangePassword} className="space-y-4">
@@ -258,7 +259,6 @@ const AccountManagement = ({ user }: { user: User }) => {
           </form>
         </div>
 
-        {/* Formulário de Alteração de E-mail */}
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-xl font-semibold mb-4">Alterar E-mail</h3>
           <p className="text-sm text-gray-500 mb-4">
@@ -321,7 +321,6 @@ const AccountManagement = ({ user }: { user: User }) => {
 // --- COMPONENTE DO PAINEL DE CONTROLE (DASHBOARD) ---
 const AdminDashboard = ({ user }: { user: User }) => {
   const [activeTab, setActiveTab] = useState("products");
-
   const handleLogout = async () => {
     await signOut(auth);
   };
@@ -380,7 +379,7 @@ const AdminDashboard = ({ user }: { user: User }) => {
   );
 };
 
-// --- COMPONENTES MODAL E LOGIN ---
+// --- COMPONENTE DO MODAL PARA ADICIONAR/EDITAR PRODUTO (COM UPLOAD) ---
 const ProductModal = ({
   product,
   onClose,
@@ -392,10 +391,43 @@ const ProductModal = ({
   const [description, setDescription] = useState(product?.description || "");
   const [price, setPrice] = useState(product?.price || 0);
   const [image, setImage] = useState(product?.image || "");
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error("Upload failed", error);
+        setUploadProgress(null);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImage(downloadURL);
+          setUploadProgress(null);
+        });
+      }
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!image) {
+      alert("Por favor, carregue uma imagem para o produto.");
+      return;
+    }
     const productData = { name, description, price: Number(price), image };
+
     if (product) {
       await updateDoc(doc(db, "products", product.id), productData);
     } else {
@@ -466,20 +498,41 @@ const ProductModal = ({
             />
           </div>
           <div>
-            <label
-              htmlFor="image"
-              className="block text-sm font-medium text-gray-700"
-            >
-              URL da Imagem
+            <label className="block text-sm font-medium text-gray-700">
+              Imagem do Produto
             </label>
-            <input
-              id="image"
-              type="text"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              required
-              className="w-full mt-1 px-3 py-2 border rounded-md"
-            />
+            <div className="mt-1 flex items-center space-x-4">
+              {image && (
+                <img
+                  src={image}
+                  alt="Preview"
+                  className="w-20 h-20 object-cover rounded-md"
+                />
+              )}
+              <label
+                htmlFor="file-upload"
+                className="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <UploadCloud size={16} className="inline-block mr-2" />
+                <span>{image ? "Trocar Imagem" : "Selecionar Imagem"}</span>
+                <input
+                  id="file-upload"
+                  name="file-upload"
+                  type="file"
+                  className="sr-only"
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                />
+              </label>
+            </div>
+            {uploadProgress !== null && (
+              <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                <div
+                  className="bg-blue-600 h-2.5 rounded-full"
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+            )}
           </div>
           <div className="flex justify-end space-x-4 pt-4">
             <button
@@ -491,7 +544,8 @@ const ProductModal = ({
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-sm text-white bg-primary rounded-md hover:bg-primary/90"
+              disabled={uploadProgress !== null}
+              className="px-4 py-2 text-sm text-white bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50"
             >
               {product ? "Salvar Alterações" : "Adicionar Produto"}
             </button>
@@ -502,6 +556,7 @@ const ProductModal = ({
   );
 };
 
+// --- COMPONENTE DA TELA DE LOGIN ---
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

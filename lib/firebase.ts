@@ -2,6 +2,7 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage"; // Importa o Storage
 
 // !! IMPORTANTE !!
 // Substitua o objeto abaixo pelas chaves que você copiou do site do Firebase
@@ -15,12 +16,12 @@ const firebaseConfig = {
   measurementId: "G-M8ZYR466ZK",
 };
 
-// Inicializa o Firebase, mas evita reinicializar se já foi feito
 const app =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
 // Exporta os serviços do Firebase que usaremos no site
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app); // Exporta o serviço de Storage
 
-export { app, auth, db };
+export { app, auth, db, storage };
