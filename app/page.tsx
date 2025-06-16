@@ -110,8 +110,6 @@ export default function AmelieCafePage() {
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
-    // ** ALTERAÇÃO APLICADA AQUI **
-    // Abre o carrinho automaticamente ao adicionar um produto.
     setIsCartOpen(true);
   };
 
@@ -388,7 +386,18 @@ export default function AmelieCafePage() {
 const HomeView = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
   <>
     <section className="relative h-[90vh] flex items-center justify-center text-center">
-      <div className="hero-background absolute inset-0 w-full h-full bg-cover bg-center -z-10" />
+      {/* ** CORREÇÃO DEFINITIVA APLICADA AQUI ** O uso do componente <Image> com a propriedade 'priority' é a forma mais
+          robusta no Next.js para carregar imagens críticas (como a do topo) 
+          sem causar o efeito de "piscar".
+      */}
+      <Image
+        src="/home-amelie.png"
+        alt="Ambiente acolhedor do Amélie Café"
+        layout="fill"
+        objectFit="cover"
+        className="-z-10"
+        priority
+      />
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 text-white px-4">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif">
