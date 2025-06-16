@@ -385,15 +385,7 @@ export default function AmelieCafePage() {
 const HomeView = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
   <>
     <section className="relative h-[90vh] flex items-center justify-center text-center">
-      {/* ** CORREÇÃO APLICADA AQUI **
-        Esta div usa um estilo de background CSS, que é mais estável
-        para imagens de fundo do que o componente <Image> do Next.js.
-        Isto deve resolver o problema da imagem a piscar.
-      */}
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center -z-10"
-        style={{ backgroundImage: `url('/home-amelie.png')` }}
-      />
+      <div className="hero-background absolute inset-0 w-full h-full bg-cover bg-center -z-10" />
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 text-white px-4">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif">
