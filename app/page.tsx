@@ -248,7 +248,6 @@ export default function AmelieCafePage() {
               <Facebook className="w-6 h-6" />
             </a>
           </div>
-          {/* ** ALTERAÇÃO DO ANO APLICADA AQUI ** */}
           <p className="text-sm text-muted-foreground">
             © 2018 Amélie Café - Todos os direitos reservados.
           </p>
@@ -387,12 +386,13 @@ const HomeView = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
   <>
     <section className="relative h-[90vh] flex items-center justify-center text-center">
       <div className="absolute inset-0 bg-black/50" />
-      <div
-        className="absolute inset-0 w-full h-full object-cover -z-10 bg-center bg-cover"
-        style={{
-          backgroundImage:
-            "url('https://placehold.co/1920x1080/2d3a33/f7f5f2?text=Amélie+Café')",
-        }}
+      {/* ** ALTERAÇÃO APLICADA AQUI ** */}
+      <Image
+        src="/home-amelie.png"
+        alt="Amélie Café flat lay"
+        layout="fill"
+        className="absolute inset-0 w-full h-full object-cover -z-10"
+        priority
       />
       <div className="relative z-10 text-white px-4">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif">
