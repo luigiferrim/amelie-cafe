@@ -61,7 +61,7 @@ const locations: Location[] = [
 
 const testimonials = [
   {
-    text: "O melhor café da cidade! O ambiente é super aconchegante e o pão de fermentação natural é simplesmente divino. Me sinto em Paris.",
+    text: "O melhor café da cidade! O ambiente é super aconchegante e o pão de fermentação natural é simplesmente divino. Sinto-me em Paris.",
     author: "Joana M.",
     source: "via TripAdvisor",
   },
@@ -197,7 +197,7 @@ export default function AmelieCafePage() {
                     : "text-foreground hover:text-primary"
                 } transition-colors`}
               >
-                {view}
+                {view.replace("sobre", "sobre nós")}
                 {currentView === view && (
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                 )}
@@ -248,8 +248,9 @@ export default function AmelieCafePage() {
               <Facebook className="w-6 h-6" />
             </a>
           </div>
+          {/* ** ALTERAÇÃO DO ANO APLICADA AQUI ** */}
           <p className="text-sm text-muted-foreground">
-            © 2024 Amélie Café - Todos os direitos reservados.
+            © 2018 Amélie Café - Todos os direitos reservados.
           </p>
         </div>
       </footer>
@@ -271,7 +272,7 @@ export default function AmelieCafePage() {
           />
           <div className="relative w-full max-w-md bg-white h-full flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold font-serif">Sua Sacola</h3>
+              <h3 className="text-lg font-semibold font-serif">A Sua Sacola</h3>
               <button
                 onClick={() => setIsCartOpen(false)}
                 className="p-2 hover:bg-gray-100 rounded-full"
@@ -282,12 +283,12 @@ export default function AmelieCafePage() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {cart.length === 0 ? (
                 <p className="text-center text-gray-500 mt-8">
-                  Sua sacola está vazia.
+                  A sua sacola está vazia.
                 </p>
               ) : (
                 cart.map((item) => (
                   <div key={item.id} className="flex items-center space-x-4">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
                       width={64}
@@ -369,7 +370,7 @@ export default function AmelieCafePage() {
                       : "text-foreground hover:text-primary"
                   }`}
                 >
-                  {view.toUpperCase()}
+                  {view.toUpperCase().replace("SOBRE", "SOBRE NÓS")}
                 </button>
               ))}
             </nav>
@@ -415,16 +416,16 @@ const HomeView = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
           Um Pedacinho da França em Lages
         </h2>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-          Desde outubro de 2018, quando abrimos nossa primeira unité na Frei
+          Desde outubro de 2018, quando abrimos a nossa primeira unité na Frei
           Gabriel, temos a missão de trazer a sofisticação parisiense para a
-          Serra Catarinense. Nossa paixão pela excelência reflete-se em cada pão
-          artesanal e em cada xícara de café especial que servimos.
+          Serra Catarinense. A nossa paixão pela excelência reflete-se em cada
+          pão artesanal e em cada chávena de café especial que servimos.
         </p>
         <button
           onClick={() => onNavigate("sobre")}
           className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 rounded-lg border-2 font-semibold transition-colors"
         >
-          Conheça nossa história
+          Conheça a nossa história
         </button>
       </div>
     </section>
@@ -438,10 +439,10 @@ const SobreView = () => (
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-4">
             <Image
-              src="https://placehold.co/1080x1350/ccc/1a1a1a?text=Ambiance"
+              src="/ambience.png"
               alt="Interior do Amélie Café"
-              width={1080}
-              height={1350}
+              width={765}
+              height={1020}
               className="rounded-lg object-cover w-full h-auto shadow-lg"
             />
           </div>
@@ -456,7 +457,7 @@ const SobreView = () => (
               ritual do café com produtos artesanais de excelência.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Nossa atmosfera acolhedora convida a uma pausa deliciosa entre
+              A nossa atmosfera acolhedora convida a uma pausa deliciosa entre
               conversas suaves, harmonizando sabores autênticos com o charme
               francês.
             </p>
@@ -468,14 +469,13 @@ const SobreView = () => (
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold font-serif">
-            Nossas Delícias Artesanais
+            As Nossas Delícias Artesanais
           </h2>
           <p className="text-lg text-muted-foreground mt-4 max-w-3xl mx-auto">
             Cada item é uma celebração ao feito à mão, com ingredientes frescos
             e técnicas clássicas.
           </p>
         </div>
-        {/* ** LAYOUT ATUALIZADO PARA IMAGENS VERTICAIS ** */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-background rounded-lg overflow-hidden shadow-sm flex flex-col">
             <Image
@@ -490,7 +490,7 @@ const SobreView = () => (
                 Pães de Fermentação Natural
               </h3>
               <p className="text-muted-foreground">
-                Diariamente, assamos baguetes, ciabattas e nosso exclusivo
+                Diariamente, assamos baguetes, ciabattas e o nosso exclusivo
                 Tordu, todos com casca crocante e miolo macio.
               </p>
             </div>
@@ -508,7 +508,7 @@ const SobreView = () => (
                 Tortas e Doces
               </h3>
               <p className="text-muted-foreground">
-                Nossas vitrines são uma tentação. Explore nossas tortas
+                As nossas vitrines são uma tentação. Explore as nossas tortas
                 cremosas, mousses delicados e uma seleção de doces que são pura
                 arte.
               </p>
@@ -527,8 +527,9 @@ const SobreView = () => (
                 Croissants & Sanduíches
               </h3>
               <p className="text-muted-foreground">
-                A perfeição em massa folhada. Experimente nosso famoso croissant
-                recheado com creme de pistache ou nossos sanduíches especiais.
+                A perfeição em massa folhada. Experimente o nosso famoso
+                croissant recheado com creme de pistache ou os nossos sanduíches
+                especiais.
               </p>
             </div>
           </div>
@@ -545,7 +546,7 @@ const SobreView = () => (
                 Brunch & Almoço
               </h3>
               <p className="text-muted-foreground">
-                A qualquer hora, desfrute de nosso brunch e saladas. Pratos de
+                A qualquer hora, desfrute do nosso brunch e saladas. Pratos de
                 almoço servidos das 11:30 às 13:30.
               </p>
             </div>
@@ -556,7 +557,7 @@ const SobreView = () => (
     <section className="py-20">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12 font-serif">
-          O que dizem nossos clientes
+          O que dizem os nossos clientes
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
@@ -593,13 +594,13 @@ const ProdutosView = ({
   <section className="py-20 bg-white">
     <div className="container mx-auto px-4">
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold font-serif">Nossa Boutique</h2>
+        <h2 className="text-4xl font-bold font-serif">A Nossa Boutique</h2>
         <p className="text-lg text-muted-foreground mt-4 max-w-2xl mx-auto">
-          Leve o sabor e o charme do Amélie Café para sua casa.
+          Leve o sabor e o charme do Amélie Café para a sua casa.
         </p>
       </div>
       {loading ? (
-        <p className="text-center">Carregando produtos...</p>
+        <p className="text-center">A carregar produtos...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {products.map((product) => (
@@ -645,7 +646,7 @@ const UnidadesView = () => (
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold font-serif">Onde nos encontrar</h2>
         <p className="text-lg text-muted-foreground mt-4">
-          Sempre há um Amélie Café perto de você.
+          Há sempre um Amélie Café perto de si.
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
