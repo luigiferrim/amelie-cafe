@@ -144,7 +144,6 @@ export default function AmelieCafePage() {
     });
     message += `\n*Total: R$ ${getTotalPrice().toFixed(2).replace(".", ",")}*`;
 
-    // ** CORREÇÃO APLICADA AQUI **
     const whatsappUrl = `https://wa.me/5549988971552?text=${encodeURIComponent(
       message
     )}`;
@@ -181,9 +180,10 @@ export default function AmelieCafePage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          {/* ** ALTERAÇÃO APLICADA AQUI ** */}
           <button
             onClick={() => navigateTo("home")}
-            className="text-2xl md:text-3xl font-bold font-serif text-foreground hover:text-primary transition-colors"
+            className="text-4xl md:text-5xl font-logo text-foreground hover:text-primary transition-colors"
           >
             Amélie Café
           </button>
@@ -255,7 +255,6 @@ export default function AmelieCafePage() {
         </div>
       </footer>
 
-      {/* ** CORREÇÃO APLICADA AQUI ** */}
       <a
         href="https://wa.me/5549988971552"
         target="_blank"

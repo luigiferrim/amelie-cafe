@@ -1,25 +1,32 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat } from "next/font/google";
+// Adicionamos a importação da nova fonte
+import { Playfair_Display, Montserrat, Great_Vibes } from "next/font/google";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["700"],
   variable: "--font-playfair",
 });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   variable: "--font-montserrat",
 });
 
+// Configuração da nova fonte para a logo
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-great-vibes",
+});
+
 export const metadata: Metadata = {
-  title: "Amélie Café - Um Pedacinho da França em Lages",
+  title: "Amélie Café - Lages, SC",
   description:
-    "Pães de fermentação natural, cafés especiais e um toque de Paris em Lages.",
-  generator: "v0.dev",
+    "Um pedacinho da França em Lages. Pães de fermentação natural, cafés especiais e um ambiente sofisticado para momentos únicos.",
 };
 
 export default function RootLayout({
@@ -29,8 +36,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      {/* Adicionamos a variável da nova fonte ao body */}
       <body
-        className={`${playfairDisplay.variable} ${montserrat.variable} font-sans`}
+        className={`${playfairDisplay.variable} ${montserrat.variable} ${greatVibes.variable} font-sans bg-background text-foreground`}
       >
         {children}
       </body>
