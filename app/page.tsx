@@ -85,7 +85,7 @@ export default function AmelieCafePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para o modal
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const productsCollection = collection(db, "products");
@@ -111,8 +111,10 @@ export default function AmelieCafePage() {
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
-    setSelectedProduct(null); // Fecha o modal de detalhes do produto
-    setIsCartOpen(true); // Abre o carrinho
+    if (selectedProduct) {
+      setSelectedProduct(null);
+    }
+    setIsCartOpen(true);
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
@@ -164,6 +166,7 @@ export default function AmelieCafePage() {
             products={products}
             loading={loadingProducts}
             onProductClick={setSelectedProduct}
+            onAddToCart={addToCart}
           />
         );
       case "unidades":
@@ -597,10 +600,12 @@ const ProdutosView = ({
   products,
   loading,
   onProductClick,
+  onAddToCart,
 }: {
   products: Product[];
   loading: boolean;
   onProductClick: (product: Product) => void;
+  onAddToCart: (product: Product) => void;
 }) => (
   <section className="py-20 bg-white">
     <div className="container mx-auto px-4">
@@ -617,26 +622,39 @@ const ProdutosView = ({
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col cursor-pointer"
-              onClick={() => onProductClick(product)}
+              className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col"
             >
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={400}
-                height={400}
-                className="w-full h-56 object-cover"
-              />
+              <div
+                className="cursor-pointer"
+                onClick={() => onProductClick(product)}
+              >
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={400}
+                  height={400}
+                  className="w-full h-56 object-cover"
+                />
+              </div>
               <div className="p-6 flex flex-col flex-1">
                 <h3 className="font-bold text-lg mb-2">{product.name}</h3>
-                {/* Descrição reduzida com 'line-clamp' */}
                 <p className="text-muted-foreground text-sm mb-4 flex-1 line-clamp-2">
                   {product.description}
                 </p>
-                <div className="flex items-center justify-between mt-auto">
+                <div className="flex items-center justify-between mt-auto pt-4">
                   <span className="text-xl font-bold text-primary">
                     R$ {product.price.toFixed(2).replace(".", ",")}
                   </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddToCart(product);
+                    }}
+                    className="bg-primary p-2 rounded-full text-primary-foreground hover:bg-primary/90 transition-transform hover:scale-110"
+                    aria-label="Adicionar à sacola"
+                  >
+                    <ShoppingBag size={18} />
+                  </button>
                 </div>
               </div>
             </div>
