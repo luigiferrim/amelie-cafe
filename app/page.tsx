@@ -14,10 +14,11 @@ import {
 } from "lucide-react";
 import { db } from "@/lib/firebase"; // Importa o banco de dados
 import { collection, onSnapshot } from "firebase/firestore";
+import Image from "next/image"; // Importamos o componente de Imagem do Next.js
 
 // --- TIPOS DE DADOS (INTERFACES) ---
 interface Product {
-  id: string; // ID do Firestore é sempre string
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -34,7 +35,7 @@ interface Location {
   mapUrl: string;
 }
 
-// --- DADOS (AGORA APENAS OS ESTÁTICOS) ---
+// --- DADOS ESTÁTICOS ---
 const locations: Location[] = [
   {
     name: "Unité Colégio Rosa",
@@ -82,24 +83,19 @@ export default function AmelieCafePage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]); // Estado para os produtos dinâmicos
+  const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
 
-  // Efeito para buscar produtos do Firestore em tempo real
   useEffect(() => {
     const productsCollection = collection(db, "products");
     const unsubscribe = onSnapshot(productsCollection, (snapshot) => {
       const productsList = snapshot.docs.map(
-        (doc) =>
-          ({
-            id: doc.id,
-            ...doc.data(),
-          } as Product)
+        (doc) => ({ id: doc.id, ...doc.data() } as Product)
       );
       setProducts(productsList);
       setLoadingProducts(false);
     });
-    return () => unsubscribe(); // Limpa o ouvinte
+    return () => unsubscribe();
   }, []);
 
   const addToCart = (product: Product) => {
@@ -143,7 +139,6 @@ export default function AmelieCafePage() {
         .replace(".", ",")}\n`;
     });
     message += `\n*Total: R$ ${getTotalPrice().toFixed(2).replace(".", ",")}*`;
-
     const whatsappUrl = `https://wa.me/5549988971552?text=${encodeURIComponent(
       message
     )}`;
@@ -179,13 +174,18 @@ export default function AmelieCafePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
           {/* ** ALTERAÇÃO APLICADA AQUI ** */}
           <button
             onClick={() => navigateTo("home")}
-            className="text-4xl md:text-5xl font-logo text-foreground hover:text-primary transition-colors"
+            className="relative h-16 w-40"
           >
-            Amélie Café
+            <Image
+              src="/logo-amelie.png" // Garanta que este é o nome do seu arquivo na pasta /public
+              alt="Amélie Café Logo"
+              layout="fill"
+              objectFit="contain"
+            />
           </button>
           <nav className="hidden md:flex space-x-8">
             {["home", "sobre", "produtos", "unidades"].map((view) => (
@@ -387,10 +387,12 @@ const HomeView = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
   <>
     <section className="relative h-[90vh] flex items-center justify-center text-center">
       <div className="absolute inset-0 bg-black/50" />
-      <img
-        src="https://placehold.co/1920x1080/2d3a33/f7f5f2?text=Amélie+Café"
-        alt="Amélie Café ambiance"
-        className="absolute inset-0 w-full h-full object-cover -z-10"
+      <div
+        className="absolute inset-0 w-full h-full object-cover -z-10 bg-center bg-cover"
+        style={{
+          backgroundImage:
+            "url('https://placehold.co/1920x1080/2d3a33/f7f5f2?text=Amélie+Café')",
+        }}
       />
       <div className="relative z-10 text-white px-4">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif">
@@ -436,9 +438,11 @@ const SobreView = () => (
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-4">
-            <img
+            <Image
               src="https://placehold.co/600x800/ccc/1a1a1a?text=Ambiance"
               alt="Interior do Amélie Café"
+              width={600}
+              height={800}
               className="rounded-lg object-cover w-full h-auto shadow-lg"
             />
           </div>
@@ -474,9 +478,11 @@ const SobreView = () => (
         </div>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-background p-6 rounded-lg">
-            <img
+            <Image
               src="https://placehold.co/600x400/ccc/1a1a1a?text=Pães+Artesanais"
               alt="Pães variados"
+              width={600}
+              height={400}
               className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
             />
             <h3 className="text-2xl font-bold font-serif mb-2">
@@ -488,9 +494,11 @@ const SobreView = () => (
             </p>
           </div>
           <div className="bg-background p-6 rounded-lg">
-            <img
+            <Image
               src="https://placehold.co/600x400/ccc/1a1a1a?text=Sanduíche+Gourmet"
               alt="Sanduíche"
+              width={600}
+              height={400}
               className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
             />
             <h3 className="text-2xl font-bold font-serif mb-2">
@@ -502,9 +510,11 @@ const SobreView = () => (
             </p>
           </div>
           <div className="bg-background p-6 rounded-lg">
-            <img
+            <Image
               src="https://placehold.co/600x400/ccc/1a1a1a?text=Croissant+com+Brie"
               alt="Croissant"
+              width={600}
+              height={400}
               className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
             />
             <h3 className="text-2xl font-bold font-serif mb-2">
@@ -516,9 +526,11 @@ const SobreView = () => (
             </p>
           </div>
           <div className="bg-background p-6 rounded-lg">
-            <img
+            <Image
               src="https://placehold.co/600x400/ccc/1a1a1a?text=Prato+de+Almoço"
               alt="Almoço"
+              width={600}
+              height={400}
               className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
             />
             <h3 className="text-2xl font-bold font-serif mb-2">
@@ -586,9 +598,11 @@ const ProdutosView = ({
               key={product.id}
               className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col"
             >
-              <img
+              <Image
                 src={product.image}
                 alt={product.name}
+                width={400}
+                height={400}
                 className="w-full h-56 object-cover"
               />
               <div className="p-6 flex flex-col flex-1">

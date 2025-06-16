@@ -57,8 +57,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-montserrat)", "sans-serif"],
         serif: ["var(--font-playfair)", "serif"],
-        // Adicionamos a nova fonte para a logo
-        logo: ["var(--font-great-vibes)", "cursive"],
+        // A fonte da logo foi removida
       },
       borderRadius: {
         lg: "var(--radius)",

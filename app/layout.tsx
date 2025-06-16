@@ -1,7 +1,7 @@
 import type React from "react";
 import type { Metadata } from "next";
-// Adicionamos a importação da nova fonte
-import { Playfair_Display, Montserrat, Great_Vibes } from "next/font/google";
+// A fonte "Great_Vibes" foi removida
+import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -14,13 +14,6 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-montserrat",
-});
-
-// Configuração da nova fonte para a logo
-const greatVibes = Great_Vibes({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-great-vibes",
 });
 
 export const metadata: Metadata = {
@@ -36,9 +29,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      {/* Adicionamos a variável da nova fonte ao body */}
+      {/* A variável da fonte da logo foi removida do body */}
       <body
-        className={`${playfairDisplay.variable} ${montserrat.variable} ${greatVibes.variable} font-sans bg-background text-foreground`}
+        className={`${playfairDisplay.variable} ${montserrat.variable} font-sans bg-background text-foreground`}
       >
         {children}
       </body>
