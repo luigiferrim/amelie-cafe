@@ -385,21 +385,17 @@ export default function AmelieCafePage() {
 
 const HomeView = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
   <>
-    <section className="relative h-[90vh] flex items-center justify-center text-center">
-      {/* ** CORREÇÃO DEFINITIVA APLICADA AQUI ** O uso do componente <Image> com a propriedade 'priority' é a forma mais
-          robusta no Next.js para carregar imagens críticas (como a do topo) 
-          sem causar o efeito de "piscar".
-      */}
+    <section className="relative h-[90vh] flex items-center justify-center text-center overflow-hidden">
       <Image
         src="/home-amelie.png"
         alt="Ambiente acolhedor do Amélie Café"
         layout="fill"
         objectFit="cover"
-        className="-z-10"
+        className="z-0"
         priority
       />
-      <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 text-white px-4">
+      <div className="absolute inset-0 bg-black/50 z-10" />
+      <div className="relative z-20 text-white px-4">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif">
           Amélie Café
         </h1>
