@@ -385,15 +385,13 @@ export default function AmelieCafePage() {
 const HomeView = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
   <>
     <section className="relative h-[90vh] flex items-center justify-center text-center">
-      <div className="absolute inset-0 bg-black/50" />
-      {/* ** ALTERAÇÃO APLICADA AQUI ** */}
-      <Image
-        src="/home-amelie.png"
-        alt="Amélie Café flat lay"
-        layout="fill"
-        className="absolute inset-0 w-full h-full object-cover -z-10"
-        priority
+      {/* Div da imagem de fundo - mais estável */}
+      <div
+        className="absolute inset-0 w-full h-full bg-cover bg-center -z-10"
+        style={{ backgroundImage: `url('/home-amelie.png')` }}
       />
+      {/* Div do overlay escuro */}
+      <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 text-white px-4">
         <h1 className="text-5xl md:text-7xl font-bold mb-6 font-serif">
           Amélie Café
