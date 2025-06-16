@@ -12,9 +12,9 @@ import {
   Facebook,
   MessageSquare,
 } from "lucide-react";
-import { db } from "@/lib/firebase"; // Importa o banco de dados
+import { db } from "@/lib/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
-import Image from "next/image"; // Importamos o componente de Imagem do Next.js
+import Image from "next/image";
 
 // --- TIPOS DE DADOS (INTERFACES) ---
 interface Product {
@@ -175,13 +175,12 @@ export default function AmelieCafePage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
-          {/* ** ALTERAÇÃO APLICADA AQUI ** */}
           <button
             onClick={() => navigateTo("home")}
             className="relative h-16 w-40"
           >
             <Image
-              src="/logo-amelie.png" // Garanta que este é o nome do seu arquivo na pasta /public
+              src="/logo-amelie.png"
               alt="Amélie Café Logo"
               layout="fill"
               objectFit="contain"
@@ -439,10 +438,10 @@ const SobreView = () => (
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-4">
             <Image
-              src="https://placehold.co/600x800/ccc/1a1a1a?text=Ambiance"
+              src="https://placehold.co/1080x1350/ccc/1a1a1a?text=Ambiance"
               alt="Interior do Amélie Café"
-              width={600}
-              height={800}
+              width={1080}
+              height={1350}
               className="rounded-lg object-cover w-full h-auto shadow-lg"
             />
           </div>
@@ -476,70 +475,80 @@ const SobreView = () => (
             e técnicas clássicas.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-background p-6 rounded-lg">
+        {/* ** LAYOUT ATUALIZADO PARA IMAGENS VERTICAIS ** */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-background rounded-lg overflow-hidden shadow-sm flex flex-col">
             <Image
-              src="https://placehold.co/600x400/ccc/1a1a1a?text=Pães+Artesanais"
+              src="/baguette.png"
               alt="Pães variados"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
+              width={1080}
+              height={1350}
+              className="w-full h-[450px] object-cover"
             />
-            <h3 className="text-2xl font-bold font-serif mb-2">
-              Pães de Fermentação Natural
-            </h3>
-            <p className="text-muted-foreground">
-              Diariamente, assamos baguetes, ciabattas e nosso exclusivo Tordu,
-              todos com casca crocante e miolo macio.
-            </p>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold font-serif mb-2">
+                Pães de Fermentação Natural
+              </h3>
+              <p className="text-muted-foreground">
+                Diariamente, assamos baguetes, ciabattas e nosso exclusivo
+                Tordu, todos com casca crocante e miolo macio.
+              </p>
+            </div>
           </div>
-          <div className="bg-background p-6 rounded-lg">
+          <div className="bg-background rounded-lg overflow-hidden shadow-sm flex flex-col">
             <Image
-              src="https://placehold.co/600x400/ccc/1a1a1a?text=Sanduíche+Gourmet"
-              alt="Sanduíche"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
+              src="/torta.png"
+              alt="Tortas e doces"
+              width={1080}
+              height={1350}
+              className="w-full h-[450px] object-cover"
             />
-            <h3 className="text-2xl font-bold font-serif mb-2">
-              Sanduíches Especiais
-            </h3>
-            <p className="text-muted-foreground">
-              Montados em nossos pães frescos, com recheios como presunto de
-              Parma, rúcula e filé com queijo.
-            </p>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold font-serif mb-2">
+                Tortas e Doces
+              </h3>
+              <p className="text-muted-foreground">
+                Nossas vitrines são uma tentação. Explore nossas tortas
+                cremosas, mousses delicados e uma seleção de doces que são pura
+                arte.
+              </p>
+            </div>
           </div>
-          <div className="bg-background p-6 rounded-lg">
+          <div className="bg-background rounded-lg overflow-hidden shadow-sm flex flex-col">
             <Image
-              src="https://placehold.co/600x400/ccc/1a1a1a?text=Croissant+com+Brie"
-              alt="Croissant"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
+              src="/croissant-pistache.png"
+              alt="Croissant de pistache"
+              width={1080}
+              height={1350}
+              className="w-full h-[450px] object-cover"
             />
-            <h3 className="text-2xl font-bold font-serif mb-2">
-              Croissants & Doces
-            </h3>
-            <p className="text-muted-foreground">
-              Croissants folhados que derretem na boca, como o de brie com
-              damasco, além de cookies, tortas e mousses.
-            </p>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold font-serif mb-2">
+                Croissants & Sanduíches
+              </h3>
+              <p className="text-muted-foreground">
+                A perfeição em massa folhada. Experimente nosso famoso croissant
+                recheado com creme de pistache ou nossos sanduíches especiais.
+              </p>
+            </div>
           </div>
-          <div className="bg-background p-6 rounded-lg">
+          <div className="bg-background rounded-lg overflow-hidden shadow-sm flex flex-col">
             <Image
-              src="https://placehold.co/600x400/ccc/1a1a1a?text=Prato+de+Almoço"
-              alt="Almoço"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-md w-full object-cover h-64 mb-4"
+              src="/brunch.png"
+              alt="Prato de brunch"
+              width={1080}
+              height={1350}
+              className="w-full h-[450px] object-cover"
             />
-            <h3 className="text-2xl font-bold font-serif mb-2">
-              Brunch & Almoço
-            </h3>
-            <p className="text-muted-foreground">
-              A qualquer hora, desfrute de nosso brunch e saladas. Pratos de
-              almoço servidos das 11:30 às 13:30.
-            </p>
+            <div className="p-6">
+              <h3 className="text-2xl font-bold font-serif mb-2">
+                Brunch & Almoço
+              </h3>
+              <p className="text-muted-foreground">
+                A qualquer hora, desfrute de nosso brunch e saladas. Pratos de
+                almoço servidos das 11:30 às 13:30.
+              </p>
+            </div>
           </div>
         </div>
       </div>
