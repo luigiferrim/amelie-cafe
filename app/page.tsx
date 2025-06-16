@@ -85,6 +85,7 @@ export default function AmelieCafePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para o modal
 
   useEffect(() => {
     const productsCollection = collection(db, "products");
@@ -110,7 +111,8 @@ export default function AmelieCafePage() {
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
-    setIsCartOpen(true);
+    setSelectedProduct(null); // Fecha o modal de detalhes do produto
+    setIsCartOpen(true); // Abre o carrinho
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
@@ -161,7 +163,7 @@ export default function AmelieCafePage() {
           <ProdutosView
             products={products}
             loading={loadingProducts}
-            onAddToCart={addToCart}
+            onProductClick={setSelectedProduct}
           />
         );
       case "unidades":
@@ -377,6 +379,14 @@ export default function AmelieCafePage() {
           </div>
         </div>
       )}
+
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={addToCart}
+        />
+      )}
     </div>
   );
 }
@@ -586,11 +596,11 @@ const SobreView = () => (
 const ProdutosView = ({
   products,
   loading,
-  onAddToCart,
+  onProductClick,
 }: {
   products: Product[];
   loading: boolean;
-  onAddToCart: (product: Product) => void;
+  onProductClick: (product: Product) => void;
 }) => (
   <section className="py-20 bg-white">
     <div className="container mx-auto px-4">
@@ -607,7 +617,8 @@ const ProdutosView = ({
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col"
+              className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col cursor-pointer"
+              onClick={() => onProductClick(product)}
             >
               <Image
                 src={product.image}
@@ -618,19 +629,14 @@ const ProdutosView = ({
               />
               <div className="p-6 flex flex-col flex-1">
                 <h3 className="font-bold text-lg mb-2">{product.name}</h3>
-                <p className="text-muted-foreground text-sm mb-4 flex-1">
+                {/* Descrição reduzida com 'line-clamp' */}
+                <p className="text-muted-foreground text-sm mb-4 flex-1 line-clamp-2">
                   {product.description}
                 </p>
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-xl font-bold text-primary">
                     R$ {product.price.toFixed(2).replace(".", ",")}
                   </span>
-                  <button
-                    onClick={() => onAddToCart(product)}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm px-4 py-2 rounded-lg font-semibold"
-                  >
-                    Adicionar
-                  </button>
                 </div>
               </div>
             </div>
@@ -676,4 +682,57 @@ const UnidadesView = () => (
       </div>
     </div>
   </section>
+);
+
+// --- COMPONENTE MODAL DE DETALHES DO PRODUTO ---
+const ProductDetailModal = ({
+  product,
+  onClose,
+  onAddToCart,
+}: {
+  product: Product;
+  onClose: () => void;
+  onAddToCart: (product: Product) => void;
+}) => (
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60">
+    <div className="relative w-full max-w-lg bg-white rounded-lg shadow-xl m-4">
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full z-10"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      <div className="grid md:grid-cols-2">
+        <div className="relative h-64 md:h-full">
+          <Image
+            src={product.image}
+            alt={product.name}
+            layout="fill"
+            objectFit="cover"
+            className="rounded-t-lg md:rounded-l-lg md:rounded-t-none"
+          />
+        </div>
+        <div className="p-6 flex flex-col">
+          <h2 className="text-2xl font-bold font-serif mb-2">{product.name}</h2>
+          <p className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-40">
+            {product.description}
+          </p>
+          <div className="mt-auto pt-4 border-t">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-2xl font-bold text-primary">
+                R$ {product.price.toFixed(2).replace(".", ",")}
+              </span>
+            </div>
+            <button
+              onClick={() => onAddToCart(product)}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-lg font-semibold flex items-center justify-center"
+            >
+              <ShoppingBag className="w-5 h-5 mr-2" />
+              Adicionar à Sacola
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 );
