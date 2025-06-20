@@ -622,10 +622,10 @@ const ProdutosView = ({
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col"
+              className="bg-background rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col group"
             >
               <div
-                className="cursor-pointer"
+                className="relative cursor-pointer"
                 onClick={() => onProductClick(product)}
               >
                 <Image
@@ -650,7 +650,7 @@ const ProdutosView = ({
                       e.stopPropagation();
                       onAddToCart(product);
                     }}
-                    className="bg-primary p-2 rounded-full text-primary-foreground hover:bg-primary/90 transition-transform hover:scale-110"
+                    className="bg-primary p-2 rounded-full text-primary-foreground hover:bg-primary/90 transition-transform group-hover:scale-110"
                     aria-label="Adicionar à sacola"
                   >
                     <ShoppingBag size={18} />
@@ -712,16 +712,19 @@ const ProductDetailModal = ({
   onClose: () => void;
   onAddToCart: (product: Product) => void;
 }) => (
-  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60">
-    <div className="relative w-full max-w-lg bg-white rounded-lg shadow-xl m-4">
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 animate-in fade-in-0 duration-300">
+    <div
+      className="relative w-full max-w-md md:max-w-4xl bg-white rounded-lg shadow-xl m-4"
+      onClick={(e) => e.stopPropagation()}
+    >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full z-10"
+        className="absolute top-3 right-3 p-2 bg-gray-100 hover:bg-gray-200 rounded-full z-10"
       >
-        <X className="w-6 h-6" />
+        <X className="w-5 h-5" />
       </button>
       <div className="grid md:grid-cols-2">
-        <div className="relative h-64 md:h-full">
+        <div className="relative h-80 md:h-[500px]">
           <Image
             src={product.image}
             alt={product.name}
@@ -731,19 +734,23 @@ const ProductDetailModal = ({
           />
         </div>
         <div className="p-6 flex flex-col">
-          <h2 className="text-2xl font-bold font-serif mb-2">{product.name}</h2>
-          <p className="text-muted-foreground text-sm mb-4 flex-grow overflow-y-auto max-h-40">
-            {product.description}
-          </p>
+          <h2 className="text-3xl font-bold font-serif mb-2">{product.name}</h2>
+          <div className="text-muted-foreground text-base mb-4 flex-grow overflow-y-auto max-h-48 pr-2">
+            {product.description.split("\n").map((line, i) => (
+              <p key={i} className="mb-2">
+                {line}
+              </p>
+            ))}
+          </div>
           <div className="mt-auto pt-4 border-t">
             <div className="flex justify-between items-center mb-4">
-              <span className="text-2xl font-bold text-primary">
+              <span className="text-3xl font-bold text-primary">
                 R$ {product.price.toFixed(2).replace(".", ",")}
               </span>
             </div>
             <button
               onClick={() => onAddToCart(product)}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-lg font-semibold flex items-center justify-center"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-lg font-semibold flex items-center justify-center text-lg"
             >
               <ShoppingBag className="w-5 h-5 mr-2" />
               Adicionar à Sacola
