@@ -33,29 +33,43 @@ interface Location {
   name: string;
   hours: string;
   mapUrl: string;
+  embedMapUrl: string;
+  image: string;
 }
 
-// --- DADOS ESTÁTICOS ---
+// --- DADOS ESTÁTICOS COM OS LINKS CORRIGIDOS ---
 const locations: Location[] = [
   {
     name: "Unité Colégio Rosa",
     hours: "Seg/Sex 8:30 às 18h\nSáb até 13h",
-    mapUrl: "https://maps.app.goo.gl/Mq1p6Ng1vyjGb2Pi9",
+    mapUrl: "https://share.google/70y54LP8TQ3Jl9opH",
+    embedMapUrl:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1806955.5896000508!2d-52.763747634388814!3d-27.803301991340636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e01f4dc5b9bfc9%3A0xacaf0eaee379cffc!2zQW3DqWxpZSBDYWbDqSAtIFVuaXTDqSBDb2zDqWdpbyBSb3Nh!5e0!3m2!1spt-BR!2sbr!4v1751648951797!5m2!1spt-BR!2sbr",
+    image: "/unidade-rosa.png",
   },
   {
     name: "Unité Frei Gabriel",
     hours: "Seg/Sex 9h às 18h",
-    mapUrl: "https://maps.app.goo.gl/viMQqgbaginzxDfr9",
+    mapUrl: "https://share.google/mrV8EjLcRn4YmiWFK",
+    embedMapUrl:
+      "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1806666.1396298185!2d-52.7581948!3d-27.8207022!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e01f8f2b3185cd%3A0x68158e9366f13747!2sAmelie%20Caf%C3%A9%20-%20Unit%C3%A9%20Frei%20Gabriel!5e0!3m2!1spt-BR!2sbr!4v1751648687999!5m2!1spt-BR!2sbr",
+    image: "/unidade-gabriel.png",
   },
   {
     name: "Unité Uniplac",
     hours: "Seg/Sex 9h às 21:30",
-    mapUrl: "https://maps.app.goo.gl/ivJ9u3irCn39rFhj8",
+    mapUrl: "https://share.google/TZw04IfSOKfFrIdZL",
+    embedMapUrl:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1806955.5896000508!2d-52.763747634388814!3d-27.803301991340636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e01f446852250f%3A0x8895b94b0c8aa764!2zQW3DqWxpZSBDYWbDqSAtIFVuaXTDqSBVbmlwbGFj!5e0!3m2!1spt-BR!2sbr!4v1751648989302!5m2!1spt-BR!2sbr",
+    image: "/unidade-uniplac.png",
   },
   {
     name: "Unité Clinitrauma",
     hours: "Seg/Sex 8h às 18h",
-    mapUrl: "https://maps.app.goo.gl/2F9e6KgCPFRHegk59",
+    mapUrl: "https://share.google/08WRSruahoUwJz7JY",
+    embedMapUrl:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1806955.5896000508!2d-52.763747634388814!3d-27.803301991340636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94e01f05dbac8de9%3A0x66a816c5cb6a5b0c!2sAm%C3%A9lie%20Caf%C3%A9%20-%20Unit%C3%A9%20Clini%20Trauma!5e0!3m2!1spt-BR!2sbr!4v1751648965414!5m2!1spt-BR!2sbr",
+    image: "/unidade-clinitrauma.png",
   },
 ];
 
@@ -674,27 +688,39 @@ const UnidadesView = () => (
           Há sempre um Amélie Café perto de si.
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {locations.map((location, index) => (
           <div
             key={index}
-            className="bg-white p-6 rounded-lg shadow-sm hover:shadow-lg transition-shadow text-center flex flex-col"
+            className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow flex flex-col overflow-hidden"
           >
-            <h3 className="text-xl font-bold font-serif mb-2">
-              {location.name}
-            </h3>
-            <p className="text-muted-foreground whitespace-pre-line flex-1 mb-6">
-              {location.hours}
-            </p>
-            <a
-              href={location.mapUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-auto border-primary text-primary hover:bg-primary hover:text-primary-foreground w-full py-2 rounded-lg border-2 font-semibold transition-colors flex items-center justify-center"
-            >
-              <MapPin className="w-4 h-4 mr-2" />
-              Ver no Mapa
-            </a>
+            <div className="relative w-full h-48">
+              <Image
+                src={location.image}
+                alt={`Foto da ${location.name}`}
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+            <div className="p-6">
+              <h3 className="text-xl font-bold font-serif mb-2">
+                {location.name}
+              </h3>
+              <p className="text-muted-foreground whitespace-pre-line flex-1 mb-4">
+                {location.hours}
+              </p>
+            </div>
+            <div className="p-6 pt-0">
+              <a
+                href={location.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground w-full py-2 rounded-lg border-2 font-semibold transition-colors flex items-center justify-center"
+              >
+                <MapPin className="w-4 h-4 mr-2" />
+                Ver no Mapa
+              </a>
+            </div>
           </div>
         ))}
       </div>
@@ -712,7 +738,10 @@ const ProductDetailModal = ({
   onClose: () => void;
   onAddToCart: (product: Product) => void;
 }) => (
-  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 animate-in fade-in-0 duration-300">
+  <div
+    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 animate-in fade-in-0 duration-300"
+    onClick={onClose}
+  >
     <div
       className="relative w-full max-w-md md:max-w-4xl bg-white rounded-lg shadow-xl m-4"
       onClick={(e) => e.stopPropagation()}
