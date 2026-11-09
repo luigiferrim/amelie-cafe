@@ -8,6 +8,8 @@ Este repositório contém o código-fonte do site oficial do **Amélie Café**, 
 
 O site serve como um portal digital para clientes, apresentando a história do café, seus produtos artesanais, informações das unidades e uma boutique online para a compra de itens selecionados.
 
+🌐 **Site no ar:** [amelie-cafe.vercel.app](https://amelie-cafe.vercel.app)
+
 ---
 
 ## ✨ Funcionalidades Principais
@@ -42,13 +44,13 @@ Para rodar este projeto em sua máquina local, siga os passos abaixo:
 1.  **Clone o repositório:**
 
     ```bash
-    git clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/seu-usuario/nome-do-repositorio.git)
+    git clone https://github.com/luigiferrim/amelie-cafe.git
     ```
 
 2.  **Navegue até o diretório do projeto:**
 
     ```bash
-    cd nome-do-repositorio
+    cd amelie-cafe
     ```
 
 3.  **Instale as dependências:**
